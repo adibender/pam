@@ -1,4 +1,4 @@
-cPackage: pam
+Package: pam
 Title: Functions and Utilities for fitting Piece-wise Exponential (Additive) models
 Version: 0.0.743
 Date: 2017-09-05
