@@ -2,7 +2,7 @@
 #'
 #' @param data Any data frame containing variables used to fit the model. Only
 #' first row will be used.
-#' @param fit A fitted object of class \code{gam}.
+#' @param fit A fitted object of class \code{\link[mgcv]{gam}}.
 #' @param term The (non-linear) model term of interest.
 #' @param ... Currently ignored.
 #' @import magrittr dplyr
@@ -10,7 +10,7 @@
 get_term <- function(data, fit, term, ...) {
 
 	range.term <- range(data[[term]], na.rm=TRUE)
-	seq.term <- seq(range.term[1], range.term[2], length.out = 100)
+	seq.term   <- seq(range.term[1], range.term[2], length.out = 100)
 
 	newdf <- data[1, ]
 	rm(data)
@@ -21,7 +21,7 @@ get_term <- function(data, fit, term, ...) {
 	pred.term     <- predict(fit, newdata=newdf, type="terms", se.fit=TRUE)
 	ind.term      <- grep(term, colnames(pred.term$fit), value=TRUE)
 
-	newdf %<>% mutate(
+	newdf %>% mutate(
 		term     = term,
 		eff      = as.numeric(pred.term$fit[, ind.term]),
 		se       = as.numeric(pred.term$se.fit[, ind.term]),
@@ -29,8 +29,6 @@ get_term <- function(data, fit, term, ...) {
 		ci.upper = eff + 2*se) %>%
 	select_(.dots=c("term", term, "eff", "se", "ci.lower", "ci.upper")) %>%
 	rename_(.dots=setNames(term, "x"))
-
-	return(newdf)
 
 }
 
