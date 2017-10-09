@@ -13,7 +13,6 @@
 </div>
 
 
-
 ### Installation
 Install from github using
 ```r
